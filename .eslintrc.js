@@ -16,6 +16,7 @@ module.exports = {
     'no-unused-expressions': 'off',
     'no-sequences': 'warn',
     'import/named': 'off',
-    'new-cap':'off'
+    'new-cap':'off',
+    'no-dupe-keys': 'off'
   },
 }

@@ -15,3 +15,9 @@ const firebaseConfig = {
   export default(context, inject)=> {
       inject('firebase', app)
   }
+
+  if (process.server){
+     console.log('plugins(SSR)', Date.now())
+  }else{
+     console.log('plugins(CSR)', Date.now())
+  }

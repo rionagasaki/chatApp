@@ -20,6 +20,9 @@ export default {
       default: null,
     },
   },
+  created(){
+    
+  },
   data() {
     return {
       pageNotFound: '404 Not Found',

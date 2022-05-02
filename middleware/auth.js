@@ -1,18 +1,10 @@
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
-export default function({ redirect, store }){
-const auth = getAuth()
-console.log(store.getters.user)
-onAuthStateChanged(auth, (user)=>{
-    if (user){
-        
-        console.log('signIn状態にあります');
-        redirect('/home')
-    }
-})
+
+// export default function({ redirect, route, store }){
+//    console.log('middleware')
+// }
+if (process.server){
+   console.log('middleware(SSR)', Date.now())
+}else{
+   console.log('middleware(CSR)', Date.now())
 }
-
-
-
-
-

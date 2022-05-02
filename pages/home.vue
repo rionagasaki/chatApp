@@ -1,12 +1,12 @@
 <template>
   <v-app id="inspire">
-    <v-system-bar color="orange darken-3" app>
+    <v-system-bar color="orange lighten-1" app>
       <v-spacer></v-spacer>
     </v-system-bar>
 
     <v-navigation-drawer
       v-model="drawer"
-      color="orange darken-1"
+      color="orange lighten-1"
       app
     >
       <v-sheet
@@ -44,57 +44,83 @@
     </v-navigation-drawer>
 
     <v-main>
+      <div class="mt-50 d-block">
+      <chat-display></chat-display>
+      </div>
     </v-main>
-    <v-footer> 
-      <v-container>
-        <v-row>
-          <v-col cols="6" class="mx-auto">
-            <v-spacer></v-spacer>
-            <v-text-field label="message" class="mb-0"></v-text-field>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-footer>
+    
   </v-app>
 </template>
 
 
 
 <script>
-import { signOut, getAuth } from 'firebase/auth'
+import { signOut, getAuth, onAuthStateChanged } from 'firebase/auth'
 import { mapGetters } from 'vuex'
+import chatDisplay from '@/components/chatDisplay'
 
 export default {
-  layout: 'home',
+  layout:'home',
+  components:{
+    chatDisplay
+  },
+  created(){
+     const auth = getAuth()
+    
+     if (process.client){
+    this.unsubscribe = onAuthStateChanged(auth, async (user)=>{
+      if (user){
+        await this.$store.dispatch('addUser',user.email);
+      }
+    })
+     }
+  },
   data(){
     return{
       drawer: null,
       links: [
 
-        ['mdi-send', 'Send'],
-        ['mdi-logout', 'ログアウト'],
+        ['mdi-send', 'ユーザー'],
+        ['mdi-logout', 'ログアウト']
       ],
+      unsubscribe: null
+     
     }
   },
  computed: {
    ...mapGetters(['avatar']),
-   ...mapGetters(['name'])
+   ...mapGetters(['name']),
+   
  },
+
+
  methods:{
    async signOut(text){
-     if(text !== 'Send'){
+     if(text === 'ログアウト'){
        const auth = getAuth()
-       await signOut(auth).then(()=>{
+       
+       await signOut(auth).then( ()=>{
+        this.$store.commit('deleteUser')
+        this.$store.commit('chat/deleteChat')
+        this.$store.commit('chat/logout');
+        this.$store.commit('chat/deleteSnap');
+       
         this.$router.push('/')
-        
+
        }).catch((e)=>{
         console.error(e)
        })
-       
-     
-   }
- }
-}
+   }else{
+     this.$router.push('user')
+    }
+ },
+ 
+ 
+},
+beforeDestroy() {
+    
+    this.unsubscribe()
+  }
 }
 
 </script>

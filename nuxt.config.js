@@ -1,6 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+  
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - chatApp',
@@ -18,16 +19,16 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  css: ["~assets/chat.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '@/plugins/firebase'
   ],
 
-  router: {
-    middleware: 'auth'
-  },
+  // router: {
+  //   middleware: 'auth'
+  // },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
