@@ -43,7 +43,6 @@ import { mapGetters } from 'vuex';
       const auth = getAuth()
         onAuthStateChanged(auth, async user=>{
             if (user){
-              this.$store.commit('chat/deleteUser')
               await this.$store.dispatch('chat/addUser', user.email);
               
             }else{
@@ -63,7 +62,6 @@ import { mapGetters } from 'vuex';
         console.log(user)
         // talkするユーザーデータを持ってくる。
         await this.$store.dispatch('chat/setUser',user)
-        this.$store.commit('chat/deleteSnap');
         this.$router.push('home')
       },
       
