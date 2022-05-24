@@ -1,15 +1,14 @@
 <template>
   <div>
-      <sidebar />
+      <user />
   </div>
 </template>
 
 <script>
+import user from '../components/user.vue'
 
-import Sidebar from '../components/sidebar.vue'
 export default {
-  components: {  Sidebar },
-
+  components:{ user },
 }
 </script>
 

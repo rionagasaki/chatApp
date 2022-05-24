@@ -82,3 +82,22 @@
     padding: 0;
   }
   
+
+  .allChat{
+   
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .allChat::-webkit-scrollbar{
+    display: none;
+  }
+
+  .chatContent{
+    overflow: scroll;
+  }
+
+  .chatContent::-webkit-scrollbar{
+    display: none;
+  }
+  

@@ -4,7 +4,7 @@
       <v-row class="text-center">
         <v-col cols="12">
           <v-card
-            class="mx-auto my-10"
+            class="allChat"
             elevation="2"
             max-width="1000"
             color="grey lighten-5"
@@ -12,8 +12,7 @@
             <div style="background-color: orange">
               <v-card-title
                 ><v-avatar><img :src="user1 ? user1.avatar : ''" /></v-avatar
-                >{{ user1 ? user1.email : 'Nouser is selected.' }}</v-card-title
-              >
+                >{{ user1 ? user1.email : 'Nouser is selected.' }}</v-card-title>
             </div>
             <v-divider></v-divider>
             <div style="background-color: #7da4cd">
@@ -23,7 +22,8 @@
                     <v-container
                       ref="scrollTarget"
                       style="height: 400px"
-                      class="overflow-y-auto"
+                      class="chatContent"
+
                     >
                       <div v-if="user1">
                         <v-row v-for="(oneChat, i) in chat" :key="i" dense>
@@ -91,8 +91,10 @@ import {
   query
 } from 'firebase/firestore'
 import { mapGetters } from 'vuex'
+
 export default {
   layout: 'home',
+
   data() {
     return {
       message: '',
@@ -148,13 +150,7 @@ export default {
                 }
 
             }) 
-
         })
-
-       
-        
-    
-        
       }
     })
   },
@@ -235,6 +231,7 @@ export default {
       })
     },
   },
+
 
   beforeDestroy() {
     this.$store.commit('chat/userliset')
