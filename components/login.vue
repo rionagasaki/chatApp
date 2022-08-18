@@ -40,9 +40,7 @@
            prepend-icon="mdi-camera"
            label="Avatar"
           ></v-file-input>
-          </v-col>    
-          
-      
+          </v-col>
        <v-spacer></v-spacer>
        <v-btn color="orange" dark class="mx-auto d-block mt-0" v-if="checked" @click="register1">アカウント作成</v-btn>
         <v-btn color="orange" dark class="mx-auto d-block " @click="logined" v-else>Log In</v-btn>
@@ -77,7 +75,7 @@ export default {
 
   
   created(){
-     
+
     const auth = getAuth()
     onAuthStateChanged(auth, user=>{
       if (user){
@@ -85,8 +83,6 @@ export default {
       }
     })
   },
-  
-    
   methods:{
     change(){
       this.loginFall = false

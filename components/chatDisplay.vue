@@ -1,3 +1,4 @@
+<!-- view -->
 <template>
   <v-app>
     <v-container>
@@ -78,18 +79,8 @@
     </v-container>
   </v-app>
 </template>
-
+<!-- viewModel -->
 <script>
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import {
-  getFirestore,
-  addDoc,
-  setDoc,
-  collection,
-  doc,
-  onSnapshot,
-  query
-} from 'firebase/firestore'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -106,52 +97,31 @@ export default {
     }
   },
 
-  created() {
+  created(){
     if (process.client) {
-      const auth = getAuth()
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
+      this.$store.dispatch('chat/fetchLoginUser').then(async (user)=>{
           this.$store.commit('chat/deleteChat')
           await this.$store.dispatch('chat/fetchChat', {
             user1: user.email,
             user2: this.user1 ? this.user1.email : '',
           })
-        }
       })
     }
   },
 
   mounted() {
-    if (this.user1 == null) {
+     if (this.user1 == null) {
       return
     }
-    const auth = getAuth()
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-         const userData = {
-          user1 : user.email,
-
-          user2 : this.user1 ? this.user1.email : ''}
-        
-        const db = getFirestore()
-        const q = query(collection(db, "chat", userData.user1 + userData.user2, "message"));
-        this.snapshot = null
-        this.snapshot = onSnapshot(q, (querySnapshot) => {
-            
-            querySnapshot.docChanges().forEach( (change) => {
-                if (change.type === "added") {
-                    
-                    console.log("New Message: ", change.doc.data().message);
-                    const chatData = {
-                        message: change.doc.data().message,
-                        sendUser: change.doc.data().sendUser
-                    }
-                    this.$store.commit('chat/addChat', chatData);
-                }
-
-            }) 
-        })
-      }
+    this.snapshot = null
+    this.$store.dispatch('chat/fetchLoginUser').then(async (user)=>{
+    await this.$store.dispatch('chat/realTimeListener',{
+      user,
+      user1: this.user1,
+    })
+    }).then((snapshot)=>{
+      this.snapshot = snapshot
+      console.log("aaa!!a")
     })
   },
 
@@ -165,78 +135,32 @@ export default {
       if (this.message === '') {
         return
       }
-
-      const auth = getAuth()
-      onAuthStateChanged(auth, async (user) => {
-        if (user && this.user1) {
-          try {
-            const messageData = {
+     this.$store.dispatch('chat/fetchLoginUser').then(async (user)=>{
+       const messageData = {
               user: [user.email, this.user1.email],
               message: this.message,
             }
-            //  チャットが追加される。
-            if (messageData.message === '') {
-              return
-            }
-            const db = getFirestore()
-            if (user) {
-              await setDoc(
-                doc(db, 'chat', messageData.user[0] + messageData.user[1]),
-                {
-                  users: messageData.user,
-                }
-              )
-              await setDoc(
-                doc(db, 'chat', messageData.user[1] + messageData.user[0]),
-                {
-                  users: messageData.user,
-                }
-              )
-
-              await addDoc(
-                collection(
-                  db,
-                  'chat',
-                  messageData.user[0] + messageData.user[1],
-                  'message'
-                ),
-                {
-                  message: messageData.message,
-                  sendUser: user.email,
-                  sendTime: new Date(),
-                }
-              )
-              await addDoc(
-                collection(
-                  db,
-                  'chat',
-                  messageData.user[1] + messageData.user[0],
-                  'message'
-                ),
-                {
-                  message: messageData.message,
-                  sendUser: user.email,
-                  sendTime: new Date(),
-                }
-              )
-            }
-            
-            this.warn = false
-            this.message = ''
+        if (user && this.user1) {
+          try {
+            await this.$store.dispatch('chat/setChat',{
+              user,
+              messageData
+            }).then(()=>{
+               this.warn = false
+               this.message = ''
+            })
           } catch (e) {
             console.error(e)
             this.warn = true
           }
         }
-      })
+     })
     },
   },
-
 
   beforeDestroy() {
     this.$store.commit('chat/userliset')
     this.$store.commit('chat/deleteChat')
-   
     this.snapshot()
   },
 }
