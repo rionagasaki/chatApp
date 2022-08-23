@@ -1,0 +1,14 @@
+{
+  "ChatDisplay": {
+    "description": "Auto imported from components/chatDisplay.vue"
+  },
+  "Login": {
+    "description": "Auto imported from components/login.vue"
+  },
+  "Sidebar": {
+    "description": "Auto imported from components/sidebar.vue"
+  },
+  "User": {
+    "description": "Auto imported from components/user.vue"
+  }
+}

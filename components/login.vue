@@ -55,7 +55,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { mapActions } from "vuex"
 
 export default {
-  layout:'login',
+  layout:'Login',
   asyncData({route}){
     console.log(route.name)
   },

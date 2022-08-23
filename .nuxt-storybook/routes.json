@@ -1,0 +1,20 @@
+[
+  {
+    "name": "home",
+    "path": "/home",
+    "component": "C:\\\\Users\\\\sakur\\\\chatApp\\\\pages\\\\home.vue",
+    "chunkName": "pages/home"
+  },
+  {
+    "name": "user",
+    "path": "/user",
+    "component": "C:\\\\Users\\\\sakur\\\\chatApp\\\\pages\\\\user.vue",
+    "chunkName": "pages/user"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "C:\\\\Users\\\\sakur\\\\chatApp\\\\pages\\\\index.vue",
+    "chunkName": "pages/index"
+  }
+]
