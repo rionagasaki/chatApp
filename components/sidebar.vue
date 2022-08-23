@@ -42,7 +42,7 @@
 <script>
 import { signOut, getAuth, onAuthStateChanged } from 'firebase/auth'
 import { mapGetters } from 'vuex'
-import chatDisplay from './chatDisplay.vue'
+import chatDisplay from './ChatDisplay.vue'
 
 
 export default {
